@@ -1,17 +1,17 @@
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;800&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600&display=swap');
 
 :root {
-  --bg-main: #FAF8F5;
+  --bg-main: #FCFAF8;
   --bg-secondary: #FFFFFF;
-  --text-dark: #1F1611;
-  --text-light: #7A695C;
-  --accent-primary: #B87D4B;
-  --accent-secondary: #D4A373;
-  --border-color: #E8DCCB;
-  --glass-bg: rgba(255, 255, 255, 0.85);
-  --transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-  --shadow-sm: 0 4px 20px rgba(184, 125, 75, 0.08);
-  --shadow-lg: 0 20px 40px rgba(31, 22, 17, 0.1);
+  --text-dark: #2A1F18;
+  --text-light: #8A7A6E;
+  --accent-primary: #C48B57;
+  --accent-secondary: #E3B787;
+  --border-color: #F0E6DA;
+  --glass-bg: rgba(255, 255, 255, 0.65);
+  --transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  --shadow-sm: 0 8px 30px rgba(196, 139, 87, 0.06);
+  --shadow-lg: 0 25px 50px rgba(42, 31, 24, 0.08);
 }
 
 * {
@@ -50,6 +50,7 @@ h1, h2, h3, .brand {
   color: var(--accent-primary);
   position: relative;
   display: inline-block;
+  text-shadow: 0 0 15px rgba(196, 139, 87, 0.2);
 }
 
 .highlight::after {
@@ -97,7 +98,7 @@ header.scrolled {
 
 .nav-links {
   display: flex;
-  gap: 2.5rem;
+  gap: 1.5rem;
   list-style: none;
 }
 
@@ -179,7 +180,7 @@ header.scrolled {
   min-height: 100vh;
   display: flex;
   align-items: center;
-  padding: 0 5%;
+  padding: 8rem 5% 2rem;
   position: relative;
   overflow: hidden;
 }
@@ -188,20 +189,20 @@ header.scrolled {
   flex: 1;
   padding-right: 3rem;
   z-index: 2;
-  margin-top: 5rem;
 }
 
 .badge {
   display: inline-block;
-  padding: 0.4rem 1.2rem;
+  padding: 0.5rem 1.5rem;
   background: var(--bg-secondary);
-  border: 1px solid var(--border-color);
+  border: 1px solid rgba(196, 139, 87, 0.3);
   border-radius: 50px;
-  font-size: 0.9rem;
+  font-size: 0.95rem;
   font-weight: 500;
   color: var(--accent-primary);
   margin-bottom: 1.5rem;
-  box-shadow: var(--shadow-sm);
+  box-shadow: 0 0 20px rgba(196, 139, 87, 0.15);
+  animation: badge-pulse 3s infinite alternate;
 }
 
 .hero h1 {
@@ -252,7 +253,6 @@ header.scrolled {
   flex: 1;
   position: relative;
   z-index: 1;
-  margin-top: 5rem;
 }
 
 .image-wrapper {
@@ -270,7 +270,7 @@ header.scrolled {
 
 .hero-image img {
   width: 100%;
-  height: 650px;
+  height: clamp(400px, 70vh, 650px);
   object-fit: cover;
   display: block;
 }
@@ -338,6 +338,22 @@ header.scrolled {
   bottom: 50px;
   left: -100px;
 }
+
+/* Sparkles Effect (วิ้งๆ) */
+.sparkle {
+  position: absolute;
+  background-color: var(--accent-secondary);
+  clip-path: polygon(50% 0%, 55% 45%, 100% 50%, 55% 55%, 50% 100%, 45% 55%, 0% 50%, 45% 45%);
+  animation: twinkle 4s infinite ease-in-out;
+  z-index: 0;
+  opacity: 0.6;
+}
+
+.sparkle-1 { top: 15%; left: 8%; width: 25px; height: 25px; animation-delay: 0s; }
+.sparkle-2 { top: 25%; left: 45%; width: 15px; height: 15px; animation-delay: 1.2s; }
+.sparkle-3 { bottom: 20%; left: 35%; width: 30px; height: 30px; animation-delay: 2.5s; }
+.sparkle-4 { top: 10%; right: 40%; width: 20px; height: 20px; animation-delay: 0.7s; }
+.sparkle-5 { bottom: 15%; right: 45%; width: 18px; height: 18px; animation-delay: 3s; }
 
 /* Features Section */
 .features {
@@ -666,6 +682,16 @@ footer {
     opacity: 1;
     transform: scale(1);
   }
+}
+
+@keyframes twinkle {
+  0%, 100% { opacity: 0.2; transform: scale(0.6) rotate(0deg); filter: drop-shadow(0 0 2px var(--accent-secondary)); }
+  50% { opacity: 1; transform: scale(1.1) rotate(15deg); filter: drop-shadow(0 0 12px var(--accent-primary)); }
+}
+
+@keyframes badge-pulse {
+  from { box-shadow: 0 0 15px rgba(196, 139, 87, 0.1); border-color: rgba(196, 139, 87, 0.2); }
+  to { box-shadow: 0 0 30px rgba(196, 139, 87, 0.3); border-color: rgba(196, 139, 87, 0.5); }
 }
 
 /* Reveal Animations */
