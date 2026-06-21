@@ -192,7 +192,7 @@
         // 1. การตั้งค่า Supabase
         const SUPABASE_URL = 'https://ocxthtgfsgzjnrxuyrqo.supabase.co';
         const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9jeHRodGdmc2d6am5yeHV5cnFvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE5ODc0ODIsImV4cCI6MjA5NzU2MzQ4Mn0.txzsCMCnXvUrhuCWiJ43ji8CBY4ImuzPyaCtlWAdCJw';
-        const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
         // วันที่ปัจจุบันสำหรับ Set Min Date
         const today = new Date().toISOString().split('T')[0];
@@ -205,7 +205,7 @@
 
         // 2. ดึงข้อมูลเมนู
         async function fetchMenu() {
-            const { data, error } = await supabase.from('menu_items').select('*').eq('is_available', true);
+            const { data, error } = await supabaseClient.from('menu_items').select('*').eq('is_available', true);
             if (data) {
                 menuItems = data;
                 renderMenu();
@@ -300,7 +300,7 @@
                 
                 // ลอง insert user ใหม่ (ถ้าเบอร์โทร/ชื่อซ้ำ จะมีปัญหา ควรใช้วิธีค้นหา หรือยอมให้ insert ใหม่)
                 // ในตัวอย่างนี้จะใช้ insert สดๆ พร้อมสร้าง LINE ID ปลอมให้
-                const { data: userData, error: userError } = await supabase
+                const { data: userData, error: userError } = await supabaseClient
                     .from('users')
                     .insert([{ 
                         line_id: mockLineId, 
@@ -315,7 +315,7 @@
                 userId = userData.id;
 
                 // 5.2 สร้างการจอง (Booking)
-                const { data: bookingData, error: bookingError } = await supabase
+                const { data: bookingData, error: bookingError } = await supabaseClient
                     .from('bookings')
                     .insert([{
                         user_id: userId,
@@ -345,7 +345,7 @@
                 }
 
                 if (orderItems.length > 0) {
-                    const { error: orderError } = await supabase.from('booking_orders').insert(orderItems);
+                    const { error: orderError } = await supabaseClient.from('booking_orders').insert(orderItems);
                     if (orderError) throw orderError;
                 }
 

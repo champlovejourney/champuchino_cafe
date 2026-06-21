@@ -136,7 +136,7 @@
         // 1. การตั้งค่า Supabase
         const SUPABASE_URL = 'https://ocxthtgfsgzjnrxuyrqo.supabase.co';
         const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9jeHRodGdmc2d6am5yeHV5cnFvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE5ODc0ODIsImV4cCI6MjA5NzU2MzQ4Mn0.txzsCMCnXvUrhuCWiJ43ji8CBY4ImuzPyaCtlWAdCJw';
-        const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
         let tables = [];
         let todayBookings = [];
@@ -157,7 +157,7 @@
 
         // 2. ดึงข้อมูลโต๊ะ
         async function fetchTables() {
-            const { data, error } = await supabase.from('cafe_tables').select('*').order('table_number');
+            const { data, error } = await supabaseClient.from('cafe_tables').select('*').order('table_number');
             if (data) tables = data;
         }
 
