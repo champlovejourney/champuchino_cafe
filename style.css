@@ -1,17 +1,17 @@
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;800&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600&display=swap');
 
 :root {
-  --bg-main: #FCFAF8;
+  --bg-main: #F4FBF7;
   --bg-secondary: #FFFFFF;
-  --text-dark: #2A1F18;
-  --text-light: #8A7A6E;
-  --accent-primary: #C48B57;
-  --accent-secondary: #E3B787;
-  --border-color: #F0E6DA;
+  --text-dark: #1C3325;
+  --text-light: #6A8E78;
+  --accent-primary: #34A853;
+  --accent-secondary: #81C784;
+  --border-color: #DDEBE1;
   --glass-bg: rgba(255, 255, 255, 0.65);
   --transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-  --shadow-sm: 0 8px 30px rgba(196, 139, 87, 0.06);
-  --shadow-lg: 0 25px 50px rgba(42, 31, 24, 0.08);
+  --shadow-sm: 0 8px 30px rgba(52, 168, 83, 0.06);
+  --shadow-lg: 0 25px 50px rgba(28, 51, 37, 0.08);
 }
 
 * {

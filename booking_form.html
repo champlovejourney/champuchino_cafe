@@ -16,18 +16,45 @@
                 extend: {
                     fontFamily: { sans: ['Prompt', 'sans-serif'] },
                     colors: {
-                        cream: '#FAF8F5',
-                        brown: { light: '#C08A56', DEFAULT: '#8B5A2B', dark: '#3E2716' }
+                        cream: '#F4FBF7',
+                        brown: { light: '#81C784', DEFAULT: '#34A853', dark: '#1C3325' }
                     }
                 }
             }
         }
     </script>
-    <style> body { background-color: #EFEBE4; } </style>
+    <style> 
+        body { background-color: #E8F5E9; } 
+        /* Sparkles Effect (วิ้งๆ) */
+        .sparkle {
+          position: absolute;
+          background-color: #81C784;
+          clip-path: polygon(50% 0%, 55% 45%, 100% 50%, 55% 55%, 50% 100%, 45% 55%, 0% 50%, 45% 45%);
+          animation: twinkle 4s infinite ease-in-out;
+          z-index: 0;
+          opacity: 0.6;
+        }
+        .sparkle-1 { top: 15%; left: 8%; width: 25px; height: 25px; animation-delay: 0s; }
+        .sparkle-2 { top: 25%; right: 10%; width: 15px; height: 15px; animation-delay: 1.2s; }
+        .sparkle-3 { top: 40%; left: 15%; width: 30px; height: 30px; animation-delay: 2.5s; }
+        .sparkle-4 { bottom: 30%; right: 10%; width: 20px; height: 20px; animation-delay: 0.7s; }
+        .sparkle-5 { bottom: 15%; left: 10%; width: 18px; height: 18px; animation-delay: 3s; }
+        @keyframes twinkle {
+          0%, 100% { opacity: 0.2; transform: scale(0.6) rotate(0deg); filter: drop-shadow(0 0 2px #81C784); }
+          50% { opacity: 1; transform: scale(1.1) rotate(15deg); filter: drop-shadow(0 0 12px #34A853); }
+        }
+    </style>
 </head>
 <body class="antialiased min-h-screen pb-10 flex justify-center">
 
     <div class="w-full max-w-md bg-white min-h-screen shadow-2xl relative overflow-x-hidden">
+
+        <!-- Decorative Sparkles (วิ้งๆ) -->
+        <div class="sparkle sparkle-1"></div>
+        <div class="sparkle sparkle-2"></div>
+        <div class="sparkle sparkle-3"></div>
+        <div class="sparkle sparkle-4"></div>
+        <div class="sparkle sparkle-5"></div>
 
         <!-- Header -->
         <header class="flex items-center p-5 bg-white/90 backdrop-blur-md sticky top-0 z-10 shadow-sm border-b border-gray-100">
