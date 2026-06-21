@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Champuchino</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Supabase JS CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Prompt', 'sans-serif'],
+                    },
+                    colors: {
+                        cream: '#F4FBF7',
+                        primary: {
+                            light: '#81C784',
+                            DEFAULT: '#34A853',
+                            dark: '#1C3325',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        body { 
+            background-color: #E8F5E9; 
+        }
+        /* Sparkles Effect */
+        .sparkle {
+          position: absolute;
+          background-color: #81C784;
+          clip-path: polygon(50% 0%, 55% 45%, 100% 50%, 55% 55%, 50% 100%, 45% 55%, 0% 50%, 45% 45%);
+          animation: twinkle 4s infinite ease-in-out;
+          z-index: 0;
+          opacity: 0.6;
+        }
+        .sparkle-1 { top: 10%; left: 5%; width: 30px; height: 30px; animation-delay: 0s; }
+        .sparkle-2 { top: 20%; right: 8%; width: 20px; height: 20px; animation-delay: 1.2s; }
+        .sparkle-3 { bottom: 15%; left: 10%; width: 25px; height: 25px; animation-delay: 2.5s; }
+        .sparkle-4 { bottom: 25%; right: 5%; width: 15px; height: 15px; animation-delay: 0.7s; }
+        @keyframes twinkle {
+          0%, 100% { opacity: 0.2; transform: scale(0.6) rotate(0deg); filter: drop-shadow(0 0 2px #81C784); }
+          50% { opacity: 1; transform: scale(1.1) rotate(15deg); filter: drop-shadow(0 0 12px #34A853); }
+        }
+        
+        .status-badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+        .status-booked { background-color: #FEF3C7; color: #92400E; border: 1px solid #FDE68A; }
+        .status-completed { background-color: #D1FAE5; color: #065F46; border: 1px solid #A7F3D0; }
+        .status-cancelled { background-color: #FEE2E2; color: #991B1B; border: 1px solid #FECACA; }
+    </style>
+</head>
+<body class="antialiased min-h-screen relative overflow-x-hidden">
+
+    <!-- Sparkles -->
+    <div class="sparkle sparkle-1"></div>
+    <div class="sparkle sparkle-2"></div>
+    <div class="sparkle sparkle-3"></div>
+    <div class="sparkle sparkle-4"></div>
+
+    <!-- Header -->
+    <header class="bg-white/90 backdrop-blur-md shadow-sm sticky top-0 z-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-xl bg-primary text-white flex items-center justify-center">
+                        <i class="fa-solid fa-clipboard-list text-xl"></i>
+                    </div>
+                    <h1 class="text-2xl font-bold text-primary-dark">Admin Dashboard</h1>
+                </div>
+                <a href="index.html" class="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition font-medium text-sm flex items-center gap-2">
+                    <i class="fa-solid fa-house"></i> หน้าแรกร้าน
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 relative z-10">
+        
+        <!-- Summary Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+            <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 flex items-center gap-4">
+                <div class="w-14 h-14 rounded-full bg-blue-50 text-blue-500 flex items-center justify-center text-2xl">
+                    <i class="fa-solid fa-users"></i>
+                </div>
+                <div>
+                    <p class="text-sm text-gray-500 font-medium">การจองทั้งหมด</p>
+                    <p class="text-2xl font-bold text-gray-800" id="stat-total">0</p>
+                </div>
+            </div>
+            <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 flex items-center gap-4">
+                <div class="w-14 h-14 rounded-full bg-yellow-50 text-yellow-500 flex items-center justify-center text-2xl">
+                    <i class="fa-solid fa-clock"></i>
+                </div>
+                <div>
+                    <p class="text-sm text-gray-500 font-medium">รอดำเนินการ (Booked)</p>
+                    <p class="text-2xl font-bold text-gray-800" id="stat-booked">0</p>
+                </div>
+            </div>
+            <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 flex items-center gap-4">
+                <div class="w-14 h-14 rounded-full bg-green-50 text-green-500 flex items-center justify-center text-2xl">
+                    <i class="fa-solid fa-check"></i>
+                </div>
+                <div>
+                    <p class="text-sm text-gray-500 font-medium">เสร็จสิ้น (Completed)</p>
+                    <p class="text-2xl font-bold text-gray-800" id="stat-completed">0</p>
+                </div>
+            </div>
+            <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 flex items-center gap-4">
+                <div class="w-14 h-14 rounded-full bg-red-50 text-red-500 flex items-center justify-center text-2xl">
+                    <i class="fa-solid fa-xmark"></i>
+                </div>
+                <div>
+                    <p class="text-sm text-gray-500 font-medium">ยกเลิก (Cancelled)</p>
+                    <p class="text-2xl font-bold text-gray-800" id="stat-cancelled">0</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bookings Table -->
+        <div class="bg-white rounded-2xl shadow-lg overflow-hidden border border-gray-100">
+            <div class="p-6 border-b border-gray-100 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                <h2 class="text-xl font-bold text-gray-800"><i class="fa-solid fa-list-ul mr-2 text-primary"></i>รายการจองคิว</h2>
+                <button onclick="fetchBookings()" class="px-4 py-2 bg-primary-light/20 text-primary-dark rounded-lg hover:bg-primary-light/40 transition font-medium text-sm flex items-center gap-2">
+                    <i class="fa-solid fa-rotate-right"></i> รีเฟรชข้อมูล
+                </button>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="bg-gray-50 text-gray-600 text-sm border-b border-gray-200">
+                            <th class="p-4 font-semibold">เลขอ้างอิง</th>
+                            <th class="p-4 font-semibold">วันที่ / เวลา</th>
+                            <th class="p-4 font-semibold">ข้อมูลลูกค้า</th>
+                            <th class="p-4 font-semibold">รายละเอียดโต๊ะ</th>
+                            <th class="p-4 font-semibold">สถานะ</th>
+                            <th class="p-4 font-semibold text-center">จัดการ</th>
+                        </tr>
+                    </thead>
+                    <tbody id="bookings-table-body" class="divide-y divide-gray-100">
+                        <tr>
+                            <td colspan="6" class="p-8 text-center text-gray-500">
+                                <i class="fa-solid fa-circle-notch fa-spin text-2xl mb-2 text-primary"></i>
+                                <p>กำลังโหลดข้อมูล...</p>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // 1. Supabase Initialization
+        const SUPABASE_URL = 'https://ocxthtgfsgzjnrxuyrqo.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9jeHRodGdmc2d6am5yeHV5cnFvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE5ODc0ODIsImV4cCI6MjA5NzU2MzQ4Mn0.txzsCMCnXvUrhuCWiJ43ji8CBY4ImuzPyaCtlWAdCJw';
+        const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        // 2. Fetch Data
+        async function fetchBookings() {
+            try {
+                // ดึงข้อมูลการจอง พร้อมดึงข้อมูลจากตาราง users และ cafe_tables ที่เชื่อมต่อกันด้วย Foreign Key
+                const { data, error } = await supabaseClient
+                    .from('bookings')
+                    .select(`
+                        id,
+                        booking_date,
+                        start_time,
+                        end_time,
+                        guest_count,
+                        status,
+                        note,
+                        users ( full_name, phone ),
+                        cafe_tables ( table_number )
+                    `)
+                    .order('booking_date', { ascending: false })
+                    .order('start_time', { ascending: false });
+
+                if (error) throw error;
+                
+                renderTable(data);
+                updateStats(data);
+                
+            } catch (err) {
+                console.error("Error fetching bookings:", err);
+                document.getElementById('bookings-table-body').innerHTML = `
+                    <tr>
+                        <td colspan="6" class="p-8 text-center text-red-500">
+                            <i class="fa-solid fa-circle-exclamation text-2xl mb-2"></i>
+                            <p>เกิดข้อผิดพลาดในการโหลดข้อมูล: ${err.message}</p>
+                        </td>
+                    </tr>
+                `;
+            }
+        }
+
+        // 3. Render Table
+        function renderTable(bookings) {
+            const tbody = document.getElementById('bookings-table-body');
+            tbody.innerHTML = '';
+
+            if (!bookings || bookings.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="6" class="p-8 text-center text-gray-500">ไม่พบข้อมูลการจอง</td></tr>`;
+                return;
+            }
+
+            bookings.forEach(booking => {
+                const refCode = booking.id.split('-')[0].toUpperCase();
+                
+                // Format Date
+                const dateObj = new Date(booking.booking_date);
+                const formattedDate = dateObj.toLocaleDateString('th-TH', { year: 'numeric', month: 'short', day: 'numeric' });
+                
+                // Status Badge
+                let statusBadge = '';
+                if (booking.status === 'booked' || booking.status === 'pending') {
+                    statusBadge = '<span class="status-badge status-booked">รอดำเนินการ</span>';
+                } else if (booking.status === 'completed') {
+                    statusBadge = '<span class="status-badge status-completed">เสร็จสิ้น</span>';
+                } else {
+                    statusBadge = '<span class="status-badge status-cancelled">ยกเลิกแล้ว</span>';
+                }
+
+                // Handle null relations defensively
+                const customerName = booking.users ? booking.users.full_name : 'ไม่ระบุ';
+                const customerPhone = booking.users ? booking.users.phone : '-';
+                const tableNum = booking.cafe_tables ? booking.cafe_tables.table_number : '?';
+
+                const tr = document.createElement('tr');
+                tr.className = 'hover:bg-gray-50 transition';
+                tr.innerHTML = `
+                    <td class="p-4">
+                        <span class="font-mono text-gray-600 bg-gray-100 px-2 py-1 rounded text-xs border border-gray-200">#${refCode}</span>
+                    </td>
+                    <td class="p-4">
+                        <p class="font-medium text-gray-800">${formattedDate}</p>
+                        <p class="text-sm text-gray-500"><i class="fa-regular fa-clock mr-1"></i>${booking.start_time.slice(0,5)} - ${booking.end_time.slice(0,5)}</p>
+                    </td>
+                    <td class="p-4">
+                        <p class="font-medium text-gray-800"><i class="fa-regular fa-user mr-1"></i>${customerName}</p>
+                        <p class="text-sm text-gray-500"><i class="fa-solid fa-phone mr-1"></i>${customerPhone}</p>
+                    </td>
+                    <td class="p-4">
+                        <p class="font-medium text-primary-dark">โต๊ะที่ ${tableNum}</p>
+                        <p class="text-sm text-gray-500">${booking.guest_count} ท่าน</p>
+                        ${booking.note ? `<p class="text-xs text-orange-600 mt-1"><i class="fa-solid fa-comment-dots mr-1"></i>${booking.note}</p>` : ''}
+                    </td>
+                    <td class="p-4">
+                        ${statusBadge}
+                    </td>
+                    <td class="p-4 text-center">
+                        <div class="flex justify-center gap-2">
+                            ${(booking.status === 'booked' || booking.status === 'pending') ? `
+                                <button onclick="updateStatus('${booking.id}', 'completed')" class="w-8 h-8 rounded bg-green-100 text-green-600 hover:bg-green-200 transition flex items-center justify-center" title="มาร์คว่าเสร็จสิ้น">
+                                    <i class="fa-solid fa-check"></i>
+                                </button>
+                                <button onclick="updateStatus('${booking.id}', 'cancelled')" class="w-8 h-8 rounded bg-red-100 text-red-600 hover:bg-red-200 transition flex items-center justify-center" title="ยกเลิกการจอง">
+                                    <i class="fa-solid fa-xmark"></i>
+                                </button>
+                            ` : `
+                                <button disabled class="w-8 h-8 rounded bg-gray-100 text-gray-400 cursor-not-allowed flex items-center justify-center">
+                                    <i class="fa-solid fa-lock"></i>
+                                </button>
+                            `}
+                        </div>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        // 4. Update Stats
+        function updateStats(bookings) {
+            let booked = 0, completed = 0, cancelled = 0;
+            
+            bookings.forEach(b => {
+                if (b.status === 'booked' || b.status === 'pending') booked++;
+                else if (b.status === 'completed') completed++;
+                else if (b.status === 'cancelled') cancelled++;
+            });
+
+            document.getElementById('stat-total').innerText = bookings.length;
+            document.getElementById('stat-booked').innerText = booked;
+            document.getElementById('stat-completed').innerText = completed;
+            document.getElementById('stat-cancelled').innerText = cancelled;
+        }
+
+        // 5. Update Status Function
+        async function updateStatus(bookingId, newStatus) {
+            const actionText = newStatus === 'completed' ? 'เสร็จสิ้น' : 'ยกเลิก';
+            if(!confirm(`ยืนยันการเปลี่ยนสถานะเป็น "${actionText}" ใช่หรือไม่?`)) return;
+
+            try {
+                const { error } = await supabaseClient
+                    .from('bookings')
+                    .update({ status: newStatus })
+                    .eq('id', bookingId);
+
+                if (error) throw error;
+                
+                alert('อัปเดตสถานะเรียบร้อยแล้ว');
+                fetchBookings(); // รีเฟรชข้อมูล
+
+            } catch (err) {
+                console.error("Error updating status:", err);
+                alert('เกิดข้อผิดพลาด: ' + err.message + '\n\n(คุณอาจจะต้องเพิ่ม Policy Allow UPDATE บน Supabase ก่อน)');
+            }
+        }
+
+        // Initial Load
+        fetchBookings();
+    </script>
+</body>
+</html>
