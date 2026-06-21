@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>จองโต๊ะทำงาน - Champuchino</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Supabase JS CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Prompt', 'sans-serif'] },
+                    colors: {
+                        cream: '#FAF8F5',
+                        brown: { light: '#C08A56', DEFAULT: '#8B5A2B', dark: '#3E2716' }
+                    }
+                }
+            }
+        }
+    </script>
+    <style> body { background-color: #EFEBE4; } </style>
+</head>
+<body class="antialiased min-h-screen pb-10 flex justify-center">
+
+    <div class="w-full max-w-md bg-white min-h-screen shadow-2xl relative overflow-x-hidden">
+
+        <!-- Header -->
+        <header class="flex items-center p-5 bg-white/90 backdrop-blur-md sticky top-0 z-10 shadow-sm border-b border-gray-100">
+            <a href="reservation_home.html" class="w-10 h-10 flex items-center justify-center rounded-full bg-gray-100 text-gray-600 hover:bg-gray-200 transition">
+                <i class="fa-solid fa-chevron-left"></i>
+            </a>
+            <h1 class="ml-4 font-bold text-xl text-brown-dark">จองโต๊ะทำงาน</h1>
+        </header>
+
+        <main class="p-5">
+            <form id="booking-form" class="space-y-6">
+                
+                <!-- 1. ข้อมูลการจอง -->
+                <section class="bg-gray-50 p-4 rounded-2xl border border-gray-100">
+                    <h2 class="font-medium text-brown-dark mb-4"><i class="fa-regular fa-calendar-check mr-2"></i>ข้อมูลการจอง</h2>
+                    
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm text-gray-600 mb-1">วันที่ต้องการจอง</label>
+                            <input type="date" id="booking_date" required class="w-full bg-white border border-gray-300 rounded-xl px-4 py-2.5 outline-none focus:border-brown focus:ring-1 focus:ring-brown">
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-sm text-gray-600 mb-1">เวลาเริ่ม</label>
+                                <input type="time" id="start_time" required class="w-full bg-white border border-gray-300 rounded-xl px-4 py-2.5 outline-none focus:border-brown">
+                            </div>
+                            <div>
+                                <label class="block text-sm text-gray-600 mb-1">เวลาสิ้นสุด</label>
+                                <input type="time" id="end_time" required class="w-full bg-white border border-gray-300 rounded-xl px-4 py-2.5 outline-none focus:border-brown">
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-sm text-gray-600 mb-1">เลือกโต๊ะ</label>
+                                <select id="table_id" required class="w-full bg-white border border-gray-300 rounded-xl px-4 py-2.5 outline-none focus:border-brown">
+                                    <option value="" disabled selected>-- เลือกโต๊ะ --</option>
+                                    <option value="1">โต๊ะ 1 (ริมหน้าต่าง)</option>
+                                    <option value="2">โต๊ะ 2 (กลางร้าน)</option>
+                                    <option value="3">โต๊ะ 3 (มุมสงบ)</option>
+                                    <option value="4">โต๊ะ 4 (โซฟา)</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-sm text-gray-600 mb-1">จำนวนคน</label>
+                                <select id="guest_count" required class="w-full bg-white border border-gray-300 rounded-xl px-4 py-2.5 outline-none focus:border-brown">
+                                    <option value="1">1 ท่าน</option>
+                                    <option value="2">2 ท่าน</option>
+                                    <option value="3">3 ท่าน</option>
+                                    <option value="4">4 ท่าน</option>
+                                    <option value="5">5 ท่าน</option>
+                                    <option value="6">6 ท่าน</option>
+                                    <option value="7">7 ท่าน</option>
+                                    <option value="8">8 ท่าน</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 2. สั่งเครื่องดื่มล่วงหน้า (Pre-order) -->
+                <section class="bg-gray-50 p-4 rounded-2xl border border-gray-100">
+                    <div class="flex justify-between items-end mb-4">
+                        <h2 class="font-medium text-brown-dark"><i class="fa-solid fa-mug-hot mr-2"></i>สั่งอาหารล่วงหน้า</h2>
+                        <span class="text-xs text-gray-500 bg-gray-200 px-2 py-1 rounded-full">ทางเลือก</span>
+                    </div>
+                    
+                    <!-- รายการเมนูจาก Supabase -->
+                    <div id="menu-container" class="space-y-3 max-h-60 overflow-y-auto pr-1">
+                        <div class="text-center text-sm text-gray-500 py-4">กำลังโหลดเมนู...</div>
+                    </div>
+
+                    <div class="mt-4 pt-3 border-t border-gray-200 flex justify-between items-center">
+                        <span class="text-sm text-gray-600">ยอดรวมอาหาร:</span>
+                        <span id="total-price" class="font-bold text-lg text-brown-dark">฿0.00</span>
+                    </div>
+                </section>
+
+                <!-- 3. ข้อมูลผู้ติดต่อ -->
+                <section class="bg-gray-50 p-4 rounded-2xl border border-gray-100">
+                    <h2 class="font-medium text-brown-dark mb-4"><i class="fa-regular fa-address-card mr-2"></i>ข้อมูลผู้จอง</h2>
+                    
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm text-gray-600 mb-1">ชื่อ-นามสกุล</label>
+                            <input type="text" id="full_name" required placeholder="เช่น สมชาย ใจดี" class="w-full bg-white border border-gray-300 rounded-xl px-4 py-2.5 outline-none focus:border-brown focus:ring-1 focus:ring-brown">
+                        </div>
+                        <div>
+                            <label class="block text-sm text-gray-600 mb-1">เบอร์โทรศัพท์</label>
+                            <input type="tel" id="phone" required placeholder="08x-xxx-xxxx" class="w-full bg-white border border-gray-300 rounded-xl px-4 py-2.5 outline-none focus:border-brown focus:ring-1 focus:ring-brown">
+                        </div>
+                        <div>
+                            <label class="block text-sm text-gray-600 mb-1">สถานะ</label>
+                            <div class="flex gap-4 mt-2">
+                                <label class="flex items-center text-sm">
+                                    <input type="radio" name="role" value="student" checked class="mr-2 accent-brown text-brown"> นักศึกษา
+                                </label>
+                                <label class="flex items-center text-sm">
+                                    <input type="radio" name="role" value="lecturer" class="mr-2 accent-brown text-brown"> อาจารย์
+                                </label>
+                                <label class="flex items-center text-sm">
+                                    <input type="radio" name="role" value="staff" class="mr-2 accent-brown text-brown"> บุคลากร
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Submit Button -->
+                <div class="pt-4 pb-6">
+                    <button type="submit" id="submit-btn" class="w-full bg-brown text-white font-bold text-lg py-3.5 rounded-2xl shadow-lg hover:bg-brown-dark transition flex justify-center items-center">
+                        <span>ยืนยันการจอง</span>
+                    </button>
+                </div>
+            </form>
+        </main>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div id="loading-overlay" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden flex-col items-center justify-center">
+        <div class="w-16 h-16 border-4 border-white/20 border-t-white rounded-full animate-spin mb-4"></div>
+        <p class="text-white font-medium">กำลังบันทึกข้อมูล...</p>
+    </div>
+
+    <script>
+        // 1. การตั้งค่า Supabase
+        const SUPABASE_URL = 'https://ocxthtgfsgzjnrxuyrqo.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9jeHRodGdmc2d6am5yeHV5cnFvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE5ODc0ODIsImV4cCI6MjA5NzU2MzQ4Mn0.txzsCMCnXvUrhuCWiJ43ji8CBY4ImuzPyaCtlWAdCJw';
+        const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        // วันที่ปัจจุบันสำหรับ Set Min Date
+        const today = new Date().toISOString().split('T')[0];
+        document.getElementById('booking_date').min = today;
+        document.getElementById('booking_date').value = today;
+
+        // State สำหรับเมนูและตะกร้า
+        let menuItems = [];
+        let cart = {}; // { menu_item_id: { quantity, price } }
+
+        // 2. ดึงข้อมูลเมนู
+        async function fetchMenu() {
+            const { data, error } = await supabase.from('menu_items').select('*').eq('is_available', true);
+            if (data) {
+                menuItems = data;
+                renderMenu();
+            }
+        }
+
+        // 3. แสดงผลเมนู
+        function renderMenu() {
+            const container = document.getElementById('menu-container');
+            container.innerHTML = '';
+
+            if (menuItems.length === 0) {
+                container.innerHTML = '<div class="text-center text-sm text-gray-500 py-4">ไม่พบเมนูอาหาร</div>';
+                return;
+            }
+
+            menuItems.forEach(item => {
+                const qty = cart[item.id]?.quantity || 0;
+                
+                const html = `
+                    <div class="flex items-center justify-between p-3 bg-white border border-gray-100 rounded-xl shadow-sm">
+                        <div class="flex items-center gap-3">
+                            <div class="w-12 h-12 bg-gray-100 rounded-lg overflow-hidden flex-shrink-0">
+                                <img src="${item.image_url}" alt="${item.name}" class="w-full h-full object-cover" onerror="this.src='https://placehold.co/100?text=Menu'">
+                            </div>
+                            <div>
+                                <h4 class="text-sm font-semibold text-gray-800 line-clamp-1">${item.name}</h4>
+                                <p class="text-xs text-brown font-medium">฿${item.price}</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-3 bg-gray-50 rounded-lg p-1 border border-gray-200">
+                            <button type="button" onclick="updateCart(${item.id}, -1, ${item.price})" class="w-7 h-7 rounded-md bg-white border border-gray-200 text-gray-600 flex items-center justify-center hover:bg-gray-100">-</button>
+                            <span id="qty-${item.id}" class="text-sm font-medium w-4 text-center">${qty}</span>
+                            <button type="button" onclick="updateCart(${item.id}, 1, ${item.price})" class="w-7 h-7 rounded-md bg-brown text-white flex items-center justify-center hover:bg-brown-dark">+</button>
+                        </div>
+                    </div>
+                `;
+                container.innerHTML += html;
+            });
+        }
+
+        // 4. อัปเดตตะกร้าสินค้า
+        window.updateCart = function(id, change, price) {
+            if (!cart[id]) cart[id] = { quantity: 0, price: price };
+            
+            cart[id].quantity += change;
+            
+            if (cart[id].quantity <= 0) {
+                delete cart[id];
+                document.getElementById(`qty-${id}`).innerText = '0';
+            } else {
+                document.getElementById(`qty-${id}`).innerText = cart[id].quantity;
+            }
+            
+            updateTotalPrice();
+        };
+
+        function updateTotalPrice() {
+            let total = 0;
+            for (let id in cart) {
+                total += cart[id].quantity * cart[id].price;
+            }
+            document.getElementById('total-price').innerText = `฿${total.toFixed(2)}`;
+        }
+
+        // 5. บันทึกข้อมูลลง Supabase เมื่อกด Submit
+        document.getElementById('booking-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const overlay = document.getElementById('loading-overlay');
+            overlay.classList.remove('hidden');
+            overlay.classList.add('flex');
+
+            try {
+                // เก็บค่าจากฟอร์ม
+                const fullName = document.getElementById('full_name').value;
+                const phone = document.getElementById('phone').value;
+                const role = document.querySelector('input[name="role"]:checked').value;
+                
+                const bookingDate = document.getElementById('booking_date').value;
+                const startTime = document.getElementById('start_time').value;
+                const endTime = document.getElementById('end_time').value;
+                const tableId = document.getElementById('table_id').value;
+                const guestCount = document.getElementById('guest_count').value;
+
+                // 5.1 สร้างหรือหา User (จำลองระบบ Login ด้วยการเช็คเบอร์โทร หรือสร้างใหม่)
+                // *หมายเหตุ: ต้องปลด RLS ของตาราง users หรือเปลี่ยน Policy
+                const mockLineId = 'line_' + Date.now(); // Mock LINE ID เพราะยังไม่มีระบบ Login จริง
+                
+                let userId;
+                
+                // ลอง insert user ใหม่ (ถ้าเบอร์โทร/ชื่อซ้ำ จะมีปัญหา ควรใช้วิธีค้นหา หรือยอมให้ insert ใหม่)
+                // ในตัวอย่างนี้จะใช้ insert สดๆ พร้อมสร้าง LINE ID ปลอมให้
+                const { data: userData, error: userError } = await supabase
+                    .from('users')
+                    .insert([{ 
+                        line_id: mockLineId, 
+                        full_name: fullName, 
+                        phone: phone, 
+                        role: role 
+                    }])
+                    .select('id')
+                    .single();
+                
+                if (userError) throw userError;
+                userId = userData.id;
+
+                // 5.2 สร้างการจอง (Booking)
+                const { data: bookingData, error: bookingError } = await supabase
+                    .from('bookings')
+                    .insert([{
+                        user_id: userId,
+                        table_id: tableId,
+                        booking_date: bookingDate,
+                        start_time: startTime,
+                        end_time: endTime,
+                        guest_count: guestCount,
+                        status: 'pending'
+                    }])
+                    .select('id')
+                    .single();
+
+                if (bookingError) throw bookingError;
+                const bookingId = bookingData.id;
+
+                // 5.3 บันทึกเมนูอาหาร (Pre-order)
+                const orderItems = [];
+                for (let itemId in cart) {
+                    orderItems.push({
+                        booking_id: bookingId,
+                        menu_item_id: parseInt(itemId),
+                        quantity: cart[itemId].quantity,
+                        price_at_time: cart[itemId].price
+                    });
+                }
+
+                if (orderItems.length > 0) {
+                    const { error: orderError } = await supabase.from('booking_orders').insert(orderItems);
+                    if (orderError) throw orderError;
+                }
+
+                // สำเร็จ!
+                alert('จองโต๊ะและสั่งอาหารสำเร็จแล้ว!');
+                window.location.href = 'reservation_home.html';
+
+            } catch (err) {
+                console.error(err);
+                alert('เกิดข้อผิดพลาด: ' + err.message + '\n(โปรดตรวจสอบว่าได้ปลดล็อก RLS ในตาราง users, bookings, booking_orders หรือยัง?)');
+            } finally {
+                overlay.classList.add('hidden');
+                overlay.classList.remove('flex');
+            }
+        });
+
+        // รันครั้งแรก
+        fetchMenu();
+    </script>
+</body>
+</html>

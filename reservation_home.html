@@ -100,7 +100,7 @@
         </main>
 
         <!-- 4. Action Button: Floating Action Button (FAB) -->
-        <button onclick="alert('กำลังเปิดหน้าฟอร์มจองโต๊ะ...')" class="absolute bottom-6 right-6 bg-brown text-white w-16 h-16 rounded-full shadow-lg shadow-brown/40 flex items-center justify-center text-2xl transition-all hover:bg-brown-dark hover:scale-105 active:scale-95">
+        <button onclick="window.location.href='booking_form.html'" class="absolute bottom-6 right-6 bg-brown text-white w-16 h-16 rounded-full shadow-lg shadow-brown/40 flex items-center justify-center text-2xl transition-all hover:bg-brown-dark hover:scale-105 active:scale-95">
             <i class="fa-solid fa-plus"></i>
         </button>
 
@@ -110,7 +110,7 @@
     <script>
         // 1. การตั้งค่า Supabase
         const SUPABASE_URL = 'https://ocxthtgfsgzjnrxuyrqo.supabase.co';
-        const SUPABASE_ANON_KEY = 'sb_publishable_XxDNk2wbpEvXH4bTY2Ym-A_3-YQZr5k';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9jeHRodGdmc2d6am5yeHV5cnFvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE5ODc0ODIsImV4cCI6MjA5NzU2MzQ4Mn0.txzsCMCnXvUrhuCWiJ43ji8CBY4ImuzPyaCtlWAdCJw';
         const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
         let tables = [];
