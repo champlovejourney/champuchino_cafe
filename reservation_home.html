@@ -14,6 +14,9 @@
     <!-- FontAwesome สำหรับไอคอน -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
+    <!-- Supabase JS CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    
     <!-- Tailwind Configuration -->
     <script>
         tailwind.config = {
@@ -75,31 +78,9 @@
                     <h2 class="font-medium text-lg text-brown-dark"><i class="fa-regular fa-calendar-check mr-2 text-brown"></i>การจองของฉัน</h2>
                 </div>
                 
-                <div class="bg-brown-dark text-white rounded-2xl p-5 shadow-lg relative overflow-hidden">
-                    <!-- Background Pattern สวยๆ -->
-                    <i class="fa-solid fa-mug-saucer absolute -right-2 -bottom-4 text-7xl opacity-10 transform -rotate-12"></i>
-                    
-                    <div class="flex justify-between items-start mb-4">
-                        <div>
-                            <p class="text-brown-light text-xs font-semibold uppercase tracking-wider mb-1">โต๊ะที่คุณจอง</p>
-                            <h3 class="text-3xl font-bold">โต๊ะ 2</h3>
-                        </div>
-                        <!-- Badge สถานะรออนุมัติ -->
-                        <span class="bg-yellow-500 text-yellow-900 text-xs font-bold px-3 py-1 rounded-full flex items-center shadow-sm">
-                            <i class="fa-solid fa-hourglass-half mr-1.5"></i> รออนุมัติ
-                        </span>
-                    </div>
-                    
-                    <div class="grid grid-cols-2 gap-4 mt-5 pt-4 border-t border-white/20">
-                        <div>
-                            <p class="text-xs text-gray-300 mb-1"><i class="fa-regular fa-calendar mr-1"></i> วันที่จอง</p>
-                            <p class="text-sm font-medium">22 มิ.ย. 2026</p>
-                        </div>
-                        <div>
-                            <p class="text-xs text-gray-300 mb-1"><i class="fa-regular fa-clock mr-1"></i> เวลา (2 ชม.)</p>
-                            <p class="text-sm font-medium">10:00 - 12:00 น.</p>
-                        </div>
-                    </div>
+                <div id="my-booking-container">
+                    <!-- จะถูกแทนที่ด้วย Javascript -->
+                    <div class="text-center p-5 text-gray-500 bg-white rounded-2xl border border-dashed border-gray-300">กำลังโหลดข้อมูลการจอง...</div>
                 </div>
             </section>
 
@@ -107,51 +88,12 @@
             <section class="mb-20">
                 <div class="flex justify-between items-center mb-4">
                     <h2 class="font-medium text-lg text-brown-dark"><i class="fa-solid fa-chair mr-2 text-brown"></i>สถานะโต๊ะวันนี้</h2>
-                    <span class="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded-full">อัปเดต: 11:20 น.</span>
+                    <span id="update-time" class="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded-full">กำลังโหลด...</span>
                 </div>
 
-                <div class="grid grid-cols-2 gap-3.5">
-                    
-                    <!-- Table 1: ว่าง -->
-                    <div class="bg-green-50 border border-green-200 rounded-2xl p-4 flex flex-col items-center justify-center text-center shadow-sm transition-transform active:scale-95">
-                        <div class="w-12 h-12 rounded-full bg-green-100 text-green-600 flex items-center justify-center text-xl mb-2">
-                            <i class="fa-solid fa-chair"></i>
-                        </div>
-                        <h4 class="font-semibold text-brown-dark">โต๊ะ 1</h4>
-                        <p class="text-[10px] text-gray-500 mb-2">รองรับสูงสุด 8 ท่าน</p>
-                        <span class="text-[11px] font-bold text-green-700 bg-green-200/60 px-3 py-1 rounded-full">ว่าง</span>
-                    </div>
-
-                    <!-- Table 2: มีคนจองแล้ว (คิวของ User เอง) -->
-                    <div class="bg-gray-50 border border-gray-200 rounded-2xl p-4 flex flex-col items-center justify-center text-center shadow-sm opacity-80">
-                        <div class="w-12 h-12 rounded-full bg-gray-200 text-gray-400 flex items-center justify-center text-xl mb-2">
-                            <i class="fa-solid fa-chair"></i>
-                        </div>
-                        <h4 class="font-semibold text-gray-500">โต๊ะ 2</h4>
-                        <p class="text-[10px] text-gray-400 mb-2">รองรับสูงสุด 8 ท่าน</p>
-                        <span class="text-[11px] font-bold text-gray-600 bg-gray-200 px-3 py-1 rounded-full">มีคิวจอง</span>
-                    </div>
-
-                    <!-- Table 3: ว่าง -->
-                    <div class="bg-green-50 border border-green-200 rounded-2xl p-4 flex flex-col items-center justify-center text-center shadow-sm transition-transform active:scale-95">
-                        <div class="w-12 h-12 rounded-full bg-green-100 text-green-600 flex items-center justify-center text-xl mb-2">
-                            <i class="fa-solid fa-chair"></i>
-                        </div>
-                        <h4 class="font-semibold text-brown-dark">โต๊ะ 3</h4>
-                        <p class="text-[10px] text-gray-500 mb-2">รองรับสูงสุด 8 ท่าน</p>
-                        <span class="text-[11px] font-bold text-green-700 bg-green-200/60 px-3 py-1 rounded-full">ว่าง</span>
-                    </div>
-
-                    <!-- Table 4: ว่าง -->
-                    <div class="bg-green-50 border border-green-200 rounded-2xl p-4 flex flex-col items-center justify-center text-center shadow-sm transition-transform active:scale-95">
-                        <div class="w-12 h-12 rounded-full bg-green-100 text-green-600 flex items-center justify-center text-xl mb-2">
-                            <i class="fa-solid fa-chair"></i>
-                        </div>
-                        <h4 class="font-semibold text-brown-dark">โต๊ะ 4</h4>
-                        <p class="text-[10px] text-gray-500 mb-2">รองรับสูงสุด 8 ท่าน</p>
-                        <span class="text-[11px] font-bold text-green-700 bg-green-200/60 px-3 py-1 rounded-full">ว่าง</span>
-                    </div>
-
+                <div id="tables-container" class="grid grid-cols-2 gap-3.5">
+                    <!-- จะถูกแทนที่ด้วย Javascript -->
+                    <div class="col-span-2 text-center p-5 text-gray-500">กำลังดึงข้อมูลโต๊ะจากฐานข้อมูล...</div>
                 </div>
             </section>
 
@@ -164,5 +106,150 @@
 
     </div>
 
+    <!-- Script สำหรับเชื่อมต่อ Supabase และอัปเดต UI -->
+    <script>
+        // 1. การตั้งค่า Supabase
+        const SUPABASE_URL = 'https://ocxthtgfsgzjnrxuyrqo.supabase.co';
+        const SUPABASE_ANON_KEY = 'sb_publishable_XxDNk2wbpEvXH4bTY2Ym-A_3-YQZr5k';
+        const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        let tables = [];
+        let todayBookings = [];
+        let myLatestBooking = null;
+
+        async function initData() {
+            await fetchTables();
+            await fetchTodayBookings();
+            await fetchMyBooking();
+            renderTables();
+            renderMyBooking();
+            
+            // อัปเดตเวลาล่าสุดบนหน้าจอ
+            const now = new Date();
+            const timeStr = now.toLocaleTimeString('th-TH', { hour: '2-digit', minute: '2-digit' });
+            document.getElementById('update-time').innerText = `อัปเดตล่าสุด: ${timeStr} น.`;
+        }
+
+        // 2. ดึงข้อมูลโต๊ะ
+        async function fetchTables() {
+            const { data, error } = await supabase.from('cafe_tables').select('*').order('table_number');
+            if (data) tables = data;
+        }
+
+        // 3. ตรวจสอบคิวว่าง
+        async function fetchTodayBookings() {
+            const today = new Date().toISOString().split('T')[0];
+            const { data, error } = await supabase
+                .from('bookings')
+                .select('table_id, status')
+                .eq('booking_date', today)
+                .neq('status', 'cancelled');
+            if (data) todayBookings = data;
+        }
+
+        // 5. จำลองการจอง (My Booking)
+        async function fetchMyBooking() {
+            // ดึงการจองล่าสุด 1 รายการเพื่อมาแสดงผล
+            const { data, error } = await supabase
+                .from('bookings')
+                .select('*, cafe_tables(table_number)')
+                .order('created_at', { ascending: false })
+                .limit(1);
+            if (data && data.length > 0) myLatestBooking = data[0];
+        }
+
+        // 4. อัปเดต UI หน้าจอ: โต๊ะว่างวันนี้
+        function renderTables() {
+            const container = document.getElementById('tables-container');
+            container.innerHTML = '';
+            
+            // Mock Fallback หากดึงข้อมูลไม่ได้ (มีประโยชน์ตอนยังไม่มีข้อมูลจริงๆ)
+            if (tables.length === 0) {
+                tables = [
+                    { id: 1, table_number: 1, capacity: 8, status: 'available' },
+                    { id: 2, table_number: 2, capacity: 8, status: 'available' },
+                    { id: 3, table_number: 3, capacity: 8, status: 'available' },
+                    { id: 4, table_number: 4, capacity: 8, status: 'available' }
+                ];
+            }
+
+            tables.forEach(table => {
+                const isBooked = todayBookings.some(b => b.table_id === table.id);
+                const isAvailable = table.status === 'available' && !isBooked;
+
+                const bgColor = isAvailable ? 'bg-green-50' : 'bg-gray-50';
+                const borderColor = isAvailable ? 'border-green-200' : 'border-gray-200';
+                const iconBgColor = isAvailable ? 'bg-green-100' : 'bg-gray-200';
+                const iconColor = isAvailable ? 'text-green-600' : 'text-gray-400';
+                const titleColor = isAvailable ? 'text-brown-dark' : 'text-gray-500';
+                const badgeBg = isAvailable ? 'bg-green-200/60' : 'bg-gray-200';
+                const badgeText = isAvailable ? 'text-green-700' : 'text-gray-600';
+                const statusText = isAvailable ? 'ว่าง' : 'มีคิวจอง';
+                const opacity = isAvailable ? '' : 'opacity-80';
+
+                container.innerHTML += `
+                    <div class="${bgColor} border ${borderColor} rounded-2xl p-4 flex flex-col items-center justify-center text-center shadow-sm transition-transform active:scale-95 ${opacity}">
+                        <div class="w-12 h-12 rounded-full ${iconBgColor} ${iconColor} flex items-center justify-center text-xl mb-2">
+                            <i class="fa-solid fa-chair"></i>
+                        </div>
+                        <h4 class="font-semibold ${titleColor}">โต๊ะ ${table.table_number}</h4>
+                        <p class="text-[10px] text-gray-500 mb-2">รองรับสูงสุด ${table.capacity} ท่าน</p>
+                        <span class="text-[11px] font-bold ${badgeText} ${badgeBg} px-3 py-1 rounded-full">${statusText}</span>
+                    </div>
+                `;
+            });
+        }
+
+        // อัปเดต UI หน้าจอ: การจองของฉัน
+        function renderMyBooking() {
+            const container = document.getElementById('my-booking-container');
+            if (!myLatestBooking) {
+                container.innerHTML = `<div class="text-center p-5 text-gray-500 bg-white rounded-2xl border border-dashed border-gray-300">คุณยังไม่มีคิวจองในระบบ</div>`;
+                return;
+            }
+
+            const dateStr = new Date(myLatestBooking.booking_date).toLocaleDateString('th-TH', { year: 'numeric', month: 'short', day: 'numeric' });
+            let statusBadge = '';
+            if (myLatestBooking.status === 'pending') {
+                statusBadge = `<span class="bg-yellow-500 text-yellow-900 text-xs font-bold px-3 py-1 rounded-full flex items-center shadow-sm"><i class="fa-solid fa-hourglass-half mr-1.5"></i> รออนุมัติ</span>`;
+            } else if (myLatestBooking.status === 'approved') {
+                statusBadge = `<span class="bg-green-500 text-white text-xs font-bold px-3 py-1 rounded-full flex items-center shadow-sm"><i class="fa-solid fa-check mr-1.5"></i> อนุมัติแล้ว</span>`;
+            } else {
+                statusBadge = `<span class="bg-red-500 text-white text-xs font-bold px-3 py-1 rounded-full flex items-center shadow-sm"><i class="fa-solid fa-xmark mr-1.5"></i> ยกเลิก</span>`;
+            }
+
+            // ถ้าไม่มี relation (เช่น join ไม่ติด) ให้แสดง table_id แทน
+            const tableNum = myLatestBooking.cafe_tables?.table_number || myLatestBooking.table_id;
+            
+            // ป้องกัน undefined ของเวลา
+            const startTime = myLatestBooking.start_time ? myLatestBooking.start_time.substring(0,5) : '';
+            const endTime = myLatestBooking.end_time ? myLatestBooking.end_time.substring(0,5) : '';
+
+            container.innerHTML = `
+                <div class="bg-brown-dark text-white rounded-2xl p-5 shadow-lg relative overflow-hidden">
+                    <i class="fa-solid fa-mug-saucer absolute -right-2 -bottom-4 text-7xl opacity-10 transform -rotate-12"></i>
+                    <div class="flex justify-between items-start mb-4">
+                        <div>
+                            <p class="text-brown-light text-xs font-semibold uppercase tracking-wider mb-1">โต๊ะที่คุณจอง</p>
+                            <h3 class="text-3xl font-bold">โต๊ะ ${tableNum}</h3>
+                        </div>
+                        ${statusBadge}
+                    </div>
+                    <div class="grid grid-cols-2 gap-4 mt-5 pt-4 border-t border-white/20">
+                        <div>
+                            <p class="text-xs text-gray-300 mb-1"><i class="fa-regular fa-calendar mr-1"></i> วันที่จอง</p>
+                            <p class="text-sm font-medium">${dateStr}</p>
+                        </div>
+                        <div>
+                            <p class="text-xs text-gray-300 mb-1"><i class="fa-regular fa-clock mr-1"></i> เวลา</p>
+                            <p class="text-sm font-medium">${startTime} - ${endTime} น.</p>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        initData();
+    </script>
 </body>
 </html>
