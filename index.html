@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Champuchino Coffee - Premium Experience</title>
+    <meta name="description" content="Champuchino Coffee - สัมผัสประสบการณ์กาแฟระดับพรีเมียม">
+    <link rel="stylesheet" href="style.css">
+    <!-- FontAwesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+    <!-- Navigation -->
+    <header>
+        <a href="#" class="brand">Champuchino<span>.</span></a>
+        <ul class="nav-links">
+            <li><a href="#home">หน้าแรก</a></li>
+            <li><a href="#features">ความใส่ใจของเรา</a></li>
+            <li><a href="#menu">เมนูแนะนำ</a></li>
+        </ul>
+        <a href="#menu" class="btn btn-primary">สั่งซื้อเลย <i class="fa-solid fa-arrow-right"></i></a>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="hero-content reveal">
+            <div class="badge">✨ เปิดประสบการณ์ใหม่</div>
+            <h1>ศิลปะแห่งการชงกาแฟ<br>ที่ <span class="highlight">Champuchino</span></h1>
+            <p>สัมผัสรสชาติอันล้ำลึกของเมล็ดกาแฟอาราบิก้า 100% คั่วบดอย่างพิถีพิถันเพื่อดึงกลิ่นอายที่ซ่อนอยู่ พร้อมเสิร์ฟในบรรยากาศสุดผ่อนคลาย</p>
+            <div class="hero-btns">
+                <a href="#menu" class="btn btn-primary">ดูเมนูของเรา</a>
+                <a href="#features" class="btn btn-outline">ค้นพบเรื่องราวของเรา <i class="fa-solid fa-play"></i></a>
+            </div>
+            
+            <div class="stats">
+                <div class="stat-item">
+                    <h4>4.9/5</h4>
+                    <p>รีวิวจากลูกค้า</p>
+                </div>
+                <div class="stat-line"></div>
+                <div class="stat-item">
+                    <h4>100%</h4>
+                    <p>อาราบิก้าพรีเมียม</p>
+                </div>
+            </div>
+        </div>
+        <div class="hero-image reveal-right">
+            <div class="image-wrapper">
+                <img src="images/hero.png" alt="บรรยากาศร้าน Champuchino">
+                <!-- Floating Card -->
+                <div class="floating-card glass">
+                    <div class="icon"><i class="fa-solid fa-mug-hot"></i></div>
+                    <div class="text">
+                        <h5>Best Seller</h5>
+                        <p>Signature Latte</p>
+                    </div>
+                </div>
+            </div>
+            <!-- Decorative Elements -->
+            <div class="blob shape-1"></div>
+            <div class="blob shape-2"></div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features" id="features">
+        <div class="section-header reveal">
+            <h2>ความใส่ใจในทุกแก้ว</h2>
+            <p>จากเมล็ดสู่ถ้วย เราคัดสรรสิ่งที่ดีที่สุดเพื่อคุณ</p>
+        </div>
+        <div class="feature-grid">
+            <div class="feature-card reveal">
+                <div class="feature-icon"><i class="fa-solid fa-leaf"></i></div>
+                <h3>Premium Beans</h3>
+                <p>เราเลือกใช้เฉพาะเมล็ดอาราบิก้าคุณภาพสูงจากแหล่งปลูกที่ดีที่สุด เพื่อรสชาติที่ยอดเยี่ยม</p>
+            </div>
+            <div class="feature-card reveal" style="transition-delay: 0.1s;">
+                <div class="feature-icon"><i class="fa-solid fa-fire-burner"></i></div>
+                <div class="popular-tag">Signature</div>
+                <h3>Artisan Roasting</h3>
+                <p>คั่วสดใหม่ด้วยเทคนิคเฉพาะของ Champuchino เพื่อดึงศักยภาพสูงสุดของกาแฟ</p>
+            </div>
+            <div class="feature-card reveal" style="transition-delay: 0.2s;">
+                <div class="feature-icon"><i class="fa-solid fa-heart"></i></div>
+                <h3>Made with Love</h3>
+                <p>บาริสต้าผู้เชี่ยวชาญของเราใส่ใจในทุกขั้นตอนการชง เพื่อให้คุณได้รับสิ่งที่ดีที่สุด</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Menu Section -->
+    <section class="menu" id="menu">
+        <div class="section-header reveal">
+            <h2>เมนูซิกเนเจอร์</h2>
+            <p>ดื่มด่ำไปกับรสชาติที่ยากจะลืมเลือน</p>
+        </div>
+
+        <!-- Category Tabs -->
+        <div class="menu-tabs reveal">
+            <button class="tab-btn active" onclick="filterMenu('all')"><i class="fa-solid fa-border-all"></i> ทั้งหมด</button>
+            <button class="tab-btn" onclick="filterMenu('coffee')"><i class="fa-solid fa-mug-saucer"></i> กาแฟ</button>
+            <button class="tab-btn" onclick="filterMenu('tea')"><i class="fa-solid fa-leaf"></i> ชา</button>
+            <button class="tab-btn" onclick="filterMenu('bakery')"><i class="fa-solid fa-cookie-bite"></i> เบเกอรี่</button>
+        </div>
+
+        <div class="menu-grid" id="menu-grid">
+            
+            <!-- Coffee -->
+            <div class="menu-card" data-category="coffee">
+                <div class="img-container">
+                    <img src="images/espresso.png" alt="Classic Espresso">
+                    <div class="overlay">
+                        <button class="btn btn-primary btn-round" onclick="addToCart('Classic Espresso')"><i class="fa-solid fa-cart-plus"></i></button>
+                    </div>
+                </div>
+                <div class="menu-info">
+                    <div class="menu-title-row">
+                        <h3>Classic Espresso</h3>
+                        <span class="price">฿85</span>
+                    </div>
+                    <p>เอสเพรสโซ่เข้มข้น หอมกรุ่นด้วยครีม่าสีทอง</p>
+                </div>
+            </div>
+
+            <div class="menu-card" data-category="coffee">
+                <div class="img-container">
+                    <img src="images/latte.png" alt="Signature Latte Art">
+                    <div class="overlay">
+                        <button class="btn btn-primary btn-round" onclick="addToCart('Signature Latte Art')"><i class="fa-solid fa-cart-plus"></i></button>
+                    </div>
+                </div>
+                <div class="menu-info">
+                    <div class="menu-title-row">
+                        <h3>Signature Latte Art</h3>
+                        <span class="price">฿110</span>
+                    </div>
+                    <p>ลาเต้รสนุ่ม ผสานศิลปะบนฟองนม</p>
+                </div>
+            </div>
+
+            <div class="menu-card" data-category="coffee">
+                <div class="img-container">
+                    <img src="images/macchiato.png" alt="Iced Caramel Macchiato">
+                    <div class="overlay">
+                        <button class="btn btn-primary btn-round" onclick="addToCart('Iced Caramel Macchiato')"><i class="fa-solid fa-cart-plus"></i></button>
+                    </div>
+                </div>
+                <div class="menu-info">
+                    <div class="menu-title-row">
+                        <h3>Iced Caramel Macchiato</h3>
+                        <span class="price">฿125</span>
+                    </div>
+                    <p>มัคคิอาโต้เย็น เลเยอร์คาราเมลหอมหวาน</p>
+                </div>
+            </div>
+
+            <!-- Tea -->
+            <div class="menu-card" data-category="tea">
+                <div class="img-container">
+                    <img src="images/matcha.png" alt="Iced Matcha Latte">
+                    <div class="overlay">
+                        <button class="btn btn-primary btn-round" onclick="addToCart('Iced Matcha Latte')"><i class="fa-solid fa-cart-plus"></i></button>
+                    </div>
+                </div>
+                <div class="menu-info">
+                    <div class="menu-title-row">
+                        <h3>Iced Matcha Latte</h3>
+                        <span class="price">฿120</span>
+                    </div>
+                    <p>มัทฉะพรีเมียมนำเข้าจากญี่ปุ่น</p>
+                </div>
+            </div>
+
+            <div class="menu-card" data-category="tea">
+                <div class="img-container">
+                    <img src="images/earlgrey.png" alt="Earl Grey Tea">
+                    <div class="overlay">
+                        <button class="btn btn-primary btn-round" onclick="addToCart('Hot Earl Grey Tea')"><i class="fa-solid fa-cart-plus"></i></button>
+                    </div>
+                </div>
+                <div class="menu-info">
+                    <div class="menu-title-row">
+                        <h3>Hot Earl Grey Tea</h3>
+                        <span class="price">฿95</span>
+                    </div>
+                    <p>ชาเอิร์ลเกรย์ร้อนกรุ่นๆ กลิ่นหอมละมุน</p>
+                </div>
+            </div>
+
+            <!-- Bakery -->
+            <div class="menu-card" data-category="bakery">
+                <div class="img-container">
+                    <img src="images/croissant.png" alt="Butter Croissant">
+                    <div class="overlay">
+                        <button class="btn btn-primary btn-round" onclick="addToCart('Butter Croissant')"><i class="fa-solid fa-cart-plus"></i></button>
+                    </div>
+                </div>
+                <div class="menu-info">
+                    <div class="menu-title-row">
+                        <h3>Butter Croissant</h3>
+                        <span class="price">฿75</span>
+                    </div>
+                    <p>ครัวซองต์เนยสดแท้ แป้งกรอบนอกนุ่มใน</p>
+                </div>
+            </div>
+
+            <div class="menu-card" data-category="bakery">
+                <div class="img-container">
+                    <img src="images/muffin.png" alt="Blueberry Muffin">
+                    <div class="overlay">
+                        <button class="btn btn-primary btn-round" onclick="addToCart('Blueberry Muffin')"><i class="fa-solid fa-cart-plus"></i></button>
+                    </div>
+                </div>
+                <div class="menu-info">
+                    <div class="menu-title-row">
+                        <h3>Blueberry Muffin</h3>
+                        <span class="price">฿65</span>
+                    </div>
+                    <p>มัฟฟินบลูเบอร์รี่เนื้อนุ่ม อัดแน่นด้วยเบอร์รี่</p>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Call to action -->
+    <section class="cta">
+        <div class="cta-container reveal">
+            <h2>สัมผัสประสบการณ์<br>ด้วยตัวคุณเอง</h2>
+            <p>พร้อมต้อนรับคุณทุกวันที่ Champuchino</p>
+            <a href="#menu" class="btn btn-primary">สั่งออเดอร์ออนไลน์เลย</a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-brand">
+                <h2>Champuchino<span>.</span></h2>
+                <p>The perfect blend of passion and beans.</p>
+                <div class="social-links">
+                    <a href="#"><i class="fa-brands fa-facebook-f"></i></a>
+                    <a href="#"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="#"><i class="fa-brands fa-line"></i></a>
+                </div>
+            </div>
+            <div class="footer-info">
+                <h3>Contact</h3>
+                <p><i class="fa-solid fa-location-dot"></i> กรุงเทพมหานคร, ประเทศไทย</p>
+                <p><i class="fa-solid fa-envelope"></i> hello@champuchino.com</p>
+                <p><i class="fa-solid fa-phone"></i> 02-XXX-XXXX</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Champuchino Coffee. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script>
+        // Menu filtering
+        function filterMenu(category) {
+            const tabs = document.querySelectorAll('.tab-btn');
+            tabs.forEach(tab => tab.classList.remove('active'));
+            event.currentTarget.classList.add('active');
+
+            const cards = document.querySelectorAll('.menu-card');
+            cards.forEach(card => {
+                if (category === 'all' || card.getAttribute('data-category') === category) {
+                    card.style.display = 'block';
+                    card.style.animation = 'none';
+                    card.offsetHeight; // trigger reflow
+                    card.style.animation = 'scaleUp 0.5s ease forwards';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
+        // Add to cart dummy function
+        function addToCart(itemName) {
+            alert(`เพิ่ม ${itemName} ลงตะกร้าแล้ว! ☕`);
+        }
+
+        // Scroll Reveal Animation
+        function reveal() {
+            var reveals = document.querySelectorAll(".reveal, .reveal-right");
+            for (var i = 0; i < reveals.length; i++) {
+                var windowHeight = window.innerHeight;
+                var elementTop = reveals[i].getBoundingClientRect().top;
+                var elementVisible = 100;
+                if (elementTop < windowHeight - elementVisible) {
+                    reveals[i].classList.add("active");
+                }
+            }
+        }
+        window.addEventListener("scroll", reveal);
+        reveal(); // Trigger on load
+        
+        // Sticky Header Effect
+        window.addEventListener('scroll', function() {
+            const header = document.querySelector('header');
+            header.classList.toggle('scrolled', window.scrollY > 50);
+        });
+    </script>
+</body>
+</html>
