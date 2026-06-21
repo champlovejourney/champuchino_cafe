@@ -21,8 +21,20 @@
             <li><a href="booking_form.html">จองโต๊ะ</a></li>
             <li><a href="admin_dashboard.html">แอดมิน</a></li>
         </ul>
-        <a href="reservation_home.html" class="btn btn-primary">ระบบจองโต๊ะ <i class="fa-solid fa-calendar-check"></i></a>
+        <a href="reservation_home.html" class="btn btn-primary desktop-only">ระบบจองโต๊ะ <i class="fa-solid fa-calendar-check"></i></a>
+        <!-- Hamburger Button (Mobile) -->
+        <button class="mobile-menu-btn" onclick="document.getElementById('mobile-nav').classList.toggle('show')">
+            <i class="fa-solid fa-bars"></i>
+        </button>
     </header>
+    <!-- Mobile Dropdown -->
+    <nav id="mobile-nav" class="mobile-dropdown">
+        <a href="index.html"><i class="fa-solid fa-house"></i> หน้าแรก</a>
+        <a href="#menu"><i class="fa-solid fa-utensils"></i> เมนูแนะนำ</a>
+        <a href="reservation_home.html"><i class="fa-solid fa-chair"></i> สถานะโต๊ะ</a>
+        <a href="booking_form.html"><i class="fa-solid fa-calendar-plus"></i> จองโต๊ะ</a>
+        <a href="admin_dashboard.html"><i class="fa-solid fa-gauge"></i> แอดมิน</a>
+    </nav>
 
     <!-- Hero Section -->
     <section class="hero" id="home">
