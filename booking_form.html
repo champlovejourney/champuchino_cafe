@@ -38,6 +38,9 @@
         </header>
 
         <main class="p-5">
+            <!-- กล่องข้อความแจ้งสถานะ -->
+            <div id="status-message" class="hidden p-4 rounded-xl mb-4 font-bold text-center text-sm"></div>
+
             <form id="booking-form" class="space-y-6">
                 
                 <!-- 1. ข้อมูลการจอง -->
@@ -313,12 +316,24 @@
                 }
 
                 // สำเร็จ!
-                alert('จองโต๊ะและสั่งอาหารสำเร็จแล้ว!');
-                window.location.href = 'reservation_home.html';
+                const statusDiv = document.getElementById('status-message');
+                statusDiv.classList.remove('hidden', 'bg-red-100', 'text-red-700');
+                statusDiv.classList.add('bg-green-100', 'text-green-700');
+                statusDiv.innerHTML = '<i class="fa-solid fa-circle-check mr-2"></i>จองสำเร็จแล้ว!';
+                
+                setTimeout(() => {
+                    window.location.href = 'reservation_home.html';
+                }, 2000);
 
             } catch (err) {
-                console.error(err);
-                alert('เกิดข้อผิดพลาด: ' + err.message + '\n(โปรดตรวจสอบว่าได้ปลดล็อก RLS ในตาราง users, bookings, booking_orders หรือยัง?)');
+                console.error('Supabase Error:', err);
+                const statusDiv = document.getElementById('status-message');
+                statusDiv.classList.remove('hidden', 'bg-green-100', 'text-green-700');
+                statusDiv.classList.add('bg-red-100', 'text-red-700');
+                statusDiv.innerHTML = '<i class="fa-solid fa-circle-xmark mr-2"></i>จองไม่สำเร็จ: ' + err.message;
+                
+                // เลื่อนหน้าจอขึ้นไปดู Error
+                window.scrollTo({ top: 0, behavior: 'smooth' });
             } finally {
                 overlay.classList.add('hidden');
                 overlay.classList.remove('flex');
